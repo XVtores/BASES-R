@@ -16,6 +16,8 @@ library(stringr)
 library(readr)
 library(skimr)
 
+## hola
+
 
 # Ayuda -------------------------------------------------------------------
 
