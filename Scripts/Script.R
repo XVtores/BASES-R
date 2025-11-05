@@ -1,5 +1,10 @@
 
-# Ctrl + shift + R permite crear secciones en el script
+
+# Shotcuts ----------------------------------------------------------------
+
+# Ctrl + shift + R                  permite crear secciones en el script
+# Ctrl + Shift + M                  pipe operator  |> 
+# Alt -                             Asignación de objetos <-
 
 # Instalar y cargar paquetes -------------------------------------------------------
 
@@ -16,7 +21,7 @@ library(stringr)
 library(readr)
 library(skimr)
 
-## hola
+## prueba git 1
 
 
 # Ayuda -------------------------------------------------------------------
@@ -38,7 +43,6 @@ plot(c(1,2,3))
 
 # R es case sensitive, por lo que no es lo mismo escribir "data" que "Data"
 
-#asignaciones Alt -
 
 nombres <- c("Andrea", "Rosa", "Juan") # se crea un objeto
 
@@ -126,7 +130,7 @@ parse_factor(puntuaciones_error,
 
 
 # Manipulación de datos (Tidyverse) ---------------------------------------
-# Shortcut pipe Ctrl + Shift + M 
+
 
 names(data_banco) # ver los nombres de las columnas en R base
 data_banco |> names() # ver los nombres de las columnas en sintaxis tidyverse
@@ -156,36 +160,42 @@ data_banco_2 |> names()
 # número de columnas
 data_banco_2 |> names() |> length() 
 
-########### FILTRAR
+
+# Filtrar -----------------------------------------------------------------
+
+# operador distinct para identificar los valores únicas
+unique(data_banco_2$Sucursal) # ver los valores únicos de la variable Sucursal en r base
+data_banco_2 |> unique(Sucursal) |> view() # error en tidyverse
+data_banco_2 |> distinct(Sucursal) |> view() # ver los valores únicos de la variable Sucursal en tidyverse
 
 # filter() actúa sobre las filas (observaciones)
 
-data_filtrada <- data_banco_2 |> filter(Sucursal == 443) |> View("filter1") #View con mayúscula genera un visor como objeto
-data_filtrada_2 <- data_banco_2 |> filter(Sucursal == 443) |> view("filter1") # con minúscula evita ese problema
+data_banco_2 |> filter(Sucursal == 443) |> view("equivalencia") # con minúscula evita ese problema
+
+db <- data_banco_2 |> filter(Sucursal != 443) |> view("equivalencia negación")
+db |> distinct(Sucursal)
 
 # operador "pleca" | 
 # filtrar por las transacciones de las sucursales 62 o 85
 
-data_filtrada_3 <- data_banco_2 |> filter(Sucursal == 62 | Sucursal == 85) |> view()
+data_banco_2 |> filter(Sucursal == 62 | Sucursal == 85) |> view("pleca")
 
 #operador %in%
-data_filtrada_3 <- data_banco_2 |> filter(Sucursal %in% c(443,267)) |> view()
+data_banco_2 |> filter(Sucursal %in% c(62, 85, 443)) |> view("in")
 
 #filtrado por excepción o complemento
-
-data_filtrada_4 <- data_banco_2 |> filter(!(Sucursal %in% c(62,85))) |> view()
+data_banco_2 |> filter(!(Sucursal %in% c(62,85))) |> view("excepción")
 
 #filtrar por 2 variables
-data_filtrada_5 <- data_banco_2 |> filter(Sucursal %in% c(62,85), Tiempo_Servicio_seg >100) |> view()
+data_banco_2 |> filter(Sucursal %in% c(62,85), Tiempo_Servicio_seg >100) |> view("dos variables")
 
 #operador &
-data_filtrada_6 <- data_banco_2 |> filter(Sucursal==443 & Tiempo_Servicio_seg < 100 & Satisfaccion=="Muy Bueno") |> view()
-
-# operador distinct para identificar los valores únicas
-data_banco_2 |> distinct(Sucursal) |> view()
+data_banco_2 |> filter(Sucursal==443 & Tiempo_Servicio_seg < 100 & Satisfaccion!="Muy Bueno") |> view("mas de dos variables")
 
 
-################ SELECCIONAR 
+
+# Seleccionar -------------------------------------------------------------
+
 #la idea es que sea a través del nombre de las columnas
 # si utilizo el número de columna es necesario ingresarlas como vector c()
 
